@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:theme_mode_demo/theme/dark_theme.dart';
 import 'package:theme_mode_demo/theme/light_theme.dart';
-
-import 'package:theme_mode_demo/views/widgets/stepper_v1/stepper_v1.dart';
-import 'package:theme_mode_demo/views/widgets/stepper_v2/stepper_v2.dart';
+import 'package:theme_mode_demo/views/widgets/steppers.dart/linear.dart/linear.dart';
+import 'package:theme_mode_demo/views/widgets/steppers.dart/linear_with_steps_reset.dart/linear_with_steps_reset.dart';
+import 'package:theme_mode_demo/views/widgets/steppers.dart/non_linear.dart/non_linear.dart';
 
 void main() {
   runApp(const MyApp());
@@ -91,46 +91,48 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         // child:
         child: _selectedTabIndex == 0
-            ? StepperV1()
+            ? StepperLinear()
             : _selectedTabIndex == 1
-                ? StepperV2()
-                : Center(
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        TextButton(
-                          onPressed: () {},
-                          child: const Text("Hello"),
+                ? StepperNonLinear()
+                : _selectedTabIndex == 2
+                    ? StepperLinearWithStepsReset()
+                    : Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            TextButton(
+                              onPressed: () {},
+                              child: const Text("Hello"),
+                            ),
+                            OutlinedButton(
+                              onPressed: () {},
+                              child: const Text("Hello"),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {},
+                              child: const Text("Hello"),
+                            ),
+                            const Text(
+                              'Toggle the switch to change the Theme',
+                            ),
+                            Switch(
+                                value: appSettings.getTheme == ThemeMode.dark,
+                                onChanged: (isDark) {
+                                  if (isDark) {
+                                    appSettings.setTheme(ThemeMode.dark);
+                                  } else {
+                                    appSettings.setTheme(ThemeMode.light);
+                                  }
+                                }),
+                            Text(
+                              appSettings.getTheme == ThemeMode.dark
+                                  ? 'Dark'
+                                  : 'Light',
+                              style: Theme.of(context).textTheme.headlineMedium,
+                            ),
+                          ],
                         ),
-                        OutlinedButton(
-                          onPressed: () {},
-                          child: const Text("Hello"),
-                        ),
-                        ElevatedButton(
-                          onPressed: () {},
-                          child: const Text("Hello"),
-                        ),
-                        const Text(
-                          'Toggle the switch to change the Theme',
-                        ),
-                        Switch(
-                            value: appSettings.getTheme == ThemeMode.dark,
-                            onChanged: (isDark) {
-                              if (isDark) {
-                                appSettings.setTheme(ThemeMode.dark);
-                              } else {
-                                appSettings.setTheme(ThemeMode.light);
-                              }
-                            }),
-                        Text(
-                          appSettings.getTheme == ThemeMode.dark
-                              ? 'Dark'
-                              : 'Light',
-                          style: Theme.of(context).textTheme.headlineMedium,
-                        ),
-                      ],
-                    ),
-                ),
+                      ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedTabIndex,
@@ -138,15 +140,19 @@ class _MyHomePageState extends State<MyHomePage> {
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
-            label: 'Stepper V1',
+            label: 'Linear',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.list),
-            label: 'Stepper V2',
+            label: 'Non-Linear',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            label: 'Steps Reset',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.widgets),
-            label: 'Widgets',
+            label: 'Theme Mode',
           ),
         ],
       ),
